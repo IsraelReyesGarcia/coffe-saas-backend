@@ -16,6 +16,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IProductCategorieRepository, ProductCategorieRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ITableRepository, TableRepository>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddAutoMapper
 (typeof(Program).Assembly);
 builder.Services.AddControllers();
