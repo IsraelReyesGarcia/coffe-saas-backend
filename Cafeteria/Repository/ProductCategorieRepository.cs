@@ -33,13 +33,13 @@ public class ProductCategorieRepository : IProductCategorieRepository
     {
         if(id <= 0)
         {
-            return null;
+            return null!;
         }
 
         var productCategorie = _db.ProductCategories.FirstOrDefault(p => p.ProductCategorieId == id);
         if(productCategorie == null)
         {
-            return null;
+            return null!;
         }
 
         var productCagorieDto = new ProductCategorieDto
@@ -118,7 +118,7 @@ public class ProductCategorieRepository : IProductCategorieRepository
     {
         if(productCategorieDto == null)
         {
-            return null;
+            return null!;
         }
 
         var productCategorie = new Cafeteria.Models.ProductCategorie

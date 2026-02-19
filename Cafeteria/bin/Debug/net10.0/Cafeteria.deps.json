@@ -12,6 +12,7 @@
           "Microsoft.AspNetCore.OpenApi": "10.0.1",
           "Microsoft.EntityFrameworkCore.Design": "10.0.2",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.0",
+          "Scalar.AspNetCore": "2.12.44",
           "Swashbuckle.AspNetCore": "10.1.0"
         },
         "runtime": {
@@ -438,6 +439,14 @@
           }
         }
       },
+      "Scalar.AspNetCore/2.12.44": {
+        "runtime": {
+          "lib/net10.0/Scalar.AspNetCore.dll": {
+            "assemblyVersion": "2.12.44.0",
+            "fileVersion": "2.12.44.0"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/10.1.0": {
         "dependencies": {
           "Swashbuckle.AspNetCore.Swagger": "10.1.0",
@@ -690,6 +699,13 @@
       "sha512": "sha512-E2+uSWxSB8LdsUVwPaqRWOcGOP92biry2JEwc0KJMdLJF+aZdczeIdEXVwEyv4nSVMQJH0o8tLhyAMiR6VF0lw==",
       "path": "npgsql.entityframeworkcore.postgresql/10.0.0",
       "hashPath": "npgsql.entityframeworkcore.postgresql.10.0.0.nupkg.sha512"
+    },
+    "Scalar.AspNetCore/2.12.44": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wrGzgmRvBE41O79GgiC1HI/w59xWf0dw8V/yOb5KgIeXZ94rWaM/Gg9yEGh761n2tZUlEK4+IxfEIJcvWyeIjA==",
+      "path": "scalar.aspnetcore/2.12.44",
+      "hashPath": "scalar.aspnetcore.2.12.44.nupkg.sha512"
     },
     "Swashbuckle.AspNetCore/10.1.0": {
       "type": "package",

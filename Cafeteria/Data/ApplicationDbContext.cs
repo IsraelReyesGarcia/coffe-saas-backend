@@ -15,4 +15,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Product> Product {get;set;}
     public DbSet<Table> Tables {get;set;}
     public DbSet<Client> Clients {get;set;}
+    public DbSet<Order> Orders {get;set;}
 }

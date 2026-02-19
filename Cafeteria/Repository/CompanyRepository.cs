@@ -45,7 +45,7 @@ public class CompanyRepository : ICompanyRepository
 
         if (result == null)
         {
-            return null;
+            return null!;
         }
 
         return new CompanyDto
@@ -66,7 +66,7 @@ public class CompanyRepository : ICompanyRepository
         var user = await _db.Users.FindAsync(createCompanyDto.UserId);
         if (user == null)
         {
-            return null;
+            return null!;
         }
 
         var company = new Cafeteria.Models.Company
@@ -106,13 +106,13 @@ public class CompanyRepository : ICompanyRepository
     public async Task<CompanyDto> Update(UpdateCompanyDto updateCompanyDto)
     {
         if(updateCompanyDto == null){
-            return null;
+            return null!;
         }
 
         var user = await _db.Users.FindAsync(updateCompanyDto.UserId);
         if (user == null)
         {
-            return null;
+            return null!;
         }
 
         var company = new Cafeteria.Models.Company 

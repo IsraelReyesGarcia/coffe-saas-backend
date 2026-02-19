@@ -16,7 +16,7 @@ public class TableRepository:ITableRepository
     public async Task<TableDto> CreateTable(CreateTableDto createTableDto)
     {
         if(createTableDto == null){
-            return null;
+            return null!;
         }
 
         var table = new Cafeteria.Models.Table
@@ -47,6 +47,7 @@ public class TableRepository:ITableRepository
         }
 
         var table = _db.Tables.FirstOrDefault(t => t.TableId == tableDto.TableId);
+        if (table == null) return false;
         _db.Tables.Remove(table);
 
         return Save();
@@ -56,10 +57,11 @@ public class TableRepository:ITableRepository
     {
         if(id <=0)
         {
-            return null;
+            return null!;
         }
-        
+
         var table = _db.Tables.FirstOrDefault(t => t.TableId == id);
+        if (table == null) return null!;
 
         return new TableDto
         {
@@ -97,7 +99,7 @@ public class TableRepository:ITableRepository
     {
         if(tableDto == null)
         {
-            return null;
+            return null!;
         }
 
         var table = new Cafeteria.Models.Table
@@ -109,7 +111,7 @@ public class TableRepository:ITableRepository
         };
 
         _db.Tables.Update(table);
-        _db.SaveChangesAsync();
+        await _db.SaveChangesAsync();
 
         return tableDto;
     }

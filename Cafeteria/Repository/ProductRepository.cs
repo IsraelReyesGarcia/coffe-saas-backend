@@ -21,6 +21,7 @@ public class ProductRepository : IProductRepository
         }
 
         var product = _db.Product.FirstOrDefault(p => p.ProductId == productDto.ProductId);
+        if (product == null) return false;
 
         _db.Product.Remove(product);
 
@@ -33,7 +34,7 @@ public class ProductRepository : IProductRepository
 
         if(product == null)
         {
-            return null;
+            return null!;
         }
 
         return new ProductResponseDto
@@ -91,7 +92,7 @@ public class ProductRepository : IProductRepository
     {
         if(createProductDto == null)
         {
-            return null;
+            return null!;
         }
 
         var productCategory = await _db.ProductCategories.FindAsync(createProductDto.ProductCategoryId);
@@ -131,7 +132,7 @@ public class ProductRepository : IProductRepository
     {
         if (productDto == null)
         {
-            return null;
+            return null!;
         }
 
         var productCategory = await _db.ProductCategories.FindAsync(productDto.ProductCategoryId);

@@ -1,6 +1,9 @@
 using Cafeteria.Repository;
 using Cafeteria.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,22 +21,17 @@ builder.Services.AddScoped<IProductCategorieRepository, ProductCategorieReposito
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ITableRepository, TableRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddAutoMapper
 (typeof(Program).Assembly);
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-       options.RoutePrefix = string.Empty; // Swagger en la raíz
-    });
+    app.MapScalarApiReference();
 }
 
 //app.UseHttpsRedirection(); // Comentado temporalmente para desarrollo

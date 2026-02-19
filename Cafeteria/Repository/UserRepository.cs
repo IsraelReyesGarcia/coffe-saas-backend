@@ -21,7 +21,7 @@ public class UserRepository : IUserRepository
         
         if (result == null)
         {
-            return null;
+            return null!;
         }
 
         return new UserResponseDto {
@@ -103,13 +103,13 @@ public class UserRepository : IUserRepository
         var role = await _db.Roles.FindAsync(userUpdateDto.RoleId);
         if(userUpdateDto == null)
         {
-            return null;
+            return null!;
         }
 
         var userToUpdate = await _db.Users.FirstOrDefaultAsync(u => u.UserId == userUpdateDto.UserId);
         if (userToUpdate == null)
         {
-            return null;
+            return null!;
         }
 
         userToUpdate.Name = userUpdateDto.Name;
