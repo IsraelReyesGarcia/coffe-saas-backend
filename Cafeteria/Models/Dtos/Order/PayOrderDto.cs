@@ -6,7 +6,7 @@ public class PayOrderDto
 {
     public float Total {get;set;}
     public float? SubTotal {get;set;}
-    public float? Iva {get;set;}
+    public float? Iva { get; set; }
     public float? Discount {get;set;}
     public int? PaymentType {get;set;}
     //Enum de PaymentType
@@ -15,4 +15,9 @@ public class PayOrderDto
     public int? ClientId {get;set;}
     public int? FinishById {get;set;}
     public bool IsPai {get;set;}
+
+    //Definir los enums de Status
+    //1 -> Creado
+    //2 -> Cancelado
+    //3 -> Pagado
 }

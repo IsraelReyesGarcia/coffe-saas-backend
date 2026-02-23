@@ -8,7 +8,6 @@ public class CancelOrderDto
     public string? CancelReason {get;set;} = string.Empty;
     public int? ClientId {get;set;}
     public int? CancelById {get;set;}
-    public int? Status {get;set;}
 
     //Definir los enums de Status
     //1 -> Creado

@@ -19,6 +19,8 @@ public class OrderRepository : IOrderRepository
             return false;
         }
 
+        order.Status = 2;
+
         _db.Orders.Update(order);
         return Save();
     }
@@ -29,6 +31,7 @@ public class OrderRepository : IOrderRepository
             return false;
         }
 
+        order.Status = 1;
         order.CreateAt = DateTime.UtcNow;
         _db.Orders.Add(order);
 
@@ -41,6 +44,8 @@ public class OrderRepository : IOrderRepository
         {
             return false;
         }
+
+        order.Status = 3;
 
         _db.Orders.Update(order);
         return Save();

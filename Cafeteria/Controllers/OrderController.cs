@@ -98,6 +98,15 @@ namespace Cafeteria.Controllers
                 return BadRequest(ModelState);
             }
 
+            var orderStatus = order.Status;
+            switch (orderStatus)
+            {
+                case 1: break;
+                case 2: return BadRequest("No se puede volver a cancelar una orden cancelada.");
+                case 3: return BadRequest("No se puede cancelar una orden que ya ha sido pagada.");
+                default: return BadRequest($"El status {orderStatus} no tiene un valor asociado.");
+            }
+
             _mapper.Map(cancelOrderDto, order);
 
             if (!_orderRepository.CancelOrder(order))
@@ -122,15 +131,24 @@ namespace Cafeteria.Controllers
                 return BadRequest("Ingrese un id valido");
             }
 
-            /* if (!_orderRepository.OrderExists(id))
+            if (!_orderRepository.OrderExists(id))
             {
                 return NotFound($"No se encontró la orden con el id {id}");
-            } */
+            } 
 
             var order = _orderRepository.GetOrder(id);
             if(order == null)
             {
                 return BadRequest("Error al obtener la orden de la base de datos");
+            }
+
+            var orderStatus = order.Status;
+            switch (orderStatus)
+            {
+                case 1: break;
+                case 2: return BadRequest("No se puede aprobar una orden cancelada");
+                case 3: return BadRequest("Esta orden ya ha sido aprobada");
+                default: return BadRequest($"El status ${orderStatus} no tiene un valor asociado");
             }
 
             _mapper.Map(payOrderDto, order);

@@ -16,4 +16,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Table> Tables {get;set;}
     public DbSet<Client> Clients {get;set;}
     public DbSet<Order> Orders {get;set;}
+    public DbSet<MenuTime> MenuTimes {get;set;}
+    public DbSet<Menu> Menu {get;set;}
 }
