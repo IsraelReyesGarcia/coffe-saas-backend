@@ -43,14 +43,14 @@ public class Order
     public Client? Client {get;set;}
 
     [Column("cancelbyid")]
-    public int? CancelById {get;set;}
+    public string? CancelById {get;set;}
     [ForeignKey(nameof(CancelById))]
-    public User? CancelByUser {get;set;}
+    public ApplicationUser? CancelByUser {get;set;}
 
     [Column("finishbyid")]
-    public int? FinishById {get;set;}
+    public string? FinishById {get;set;}
     [ForeignKey(nameof(FinishById))]
-    public User? FinishByUser {get;set;}
+    public ApplicationUser? FinishByUser {get;set;}
 
     [Column("status")]
     public int Status {get;set;}
@@ -62,4 +62,6 @@ public class Order
     public int TableId {get;set;}
     [ForeignKey(nameof(TableId))]
     public required Table Table {get;set;}
+
+    public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
 }

@@ -41,10 +41,8 @@ public class Company
     public DateTime? UpdateAt {get; set;} = DateTime.Now;
 
     [Column("userid")]
-    public int? UserId {get; set;}
+    public string? UserId {get; set;}
 
     [ForeignKey(nameof(UserId))]
-
-    public required User User {get;set;}
-
+    public ApplicationUser? User {get;set;}
 }

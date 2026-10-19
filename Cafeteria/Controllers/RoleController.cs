@@ -4,6 +4,7 @@ using Cafeteria.Repository.IRepository;
 using AutoMapper;
 using Cafeteria.Models.Dtos;
 using Cafeteria.Models;
+using Cafeteria.Models.Enums;
 
 namespace Cafeteria.Controllers
 {
@@ -26,31 +27,31 @@ namespace Cafeteria.Controllers
 
         public IActionResult GetRoles()
         {
-            var roles = _roleRepository.getRoles();
-            var rolesDto = new List<RoleDto>();
-            foreach(var role in roles)
+            var roles = _roleRepository.GetRoles();
+            var rolesDto = new List<ApplicationRole>();
+            /* foreach(var role in roles)
             {
                 rolesDto.Add(_mapper.Map<RoleDto>(role));
-            }
+            } */
 
             return Ok(rolesDto);
         }
 
-        [HttpGet("{id:int}", Name = "GetRole")]
+        [HttpGet("{id}", Name = "GetRole")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult GetRole(int id)
+        public async Task<IActionResult> GetRole(string id)
         {
-            var role = _roleRepository.GetRole(id);
+            var role = await _roleRepository.GetRole(id);
             if(role == null)
             {
                 return NotFound($"El role con el id {id} no existe");
             }
 
-            var roleDto = _mapper.Map<RoleDto>(role); /* _mapper.Map<Donde se va a mapear>(Lo que se está mapeando) */
-            return Ok(roleDto);
+            //var roleDto = _mapper.Map<RoleDto>(role); /* _mapper.Map<Donde se va a mapear>(Lo que se está mapeando) */
+            return Ok(_mapper.Map<RoleDto>(role));
         }
 
         [HttpPost]
@@ -60,9 +61,9 @@ namespace Cafeteria.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public IActionResult CreateRole([FromBody] CreateRoleDto createRoleDto)
+        public async Task<IActionResult> CreateRole([FromBody] CreateRoleDto createRoleDto)
         {
-            if(CreateRole == null)
+            if(createRoleDto == null)
             {
                 return BadRequest(ModelState);
             }
@@ -73,14 +74,14 @@ namespace Cafeteria.Controllers
                 return BadRequest(ModelState);
             }
 
-            var role = _mapper.Map<Role>(createRoleDto);
-            if (!_roleRepository.CreateRole(role))
+            var role = _mapper.Map<ApplicationRole>(createRoleDto);
+            if (!await _roleRepository.CreateRole(role))
             {
-                ModelState.AddModelError("CustomError",$"Algo salió mal al guardar el registro {role.name}");
+                ModelState.AddModelError("CustomError",$"Algo salió mal al guardar el registro {role.Name}");
                 return StatusCode(500, ModelState);
             }
 
-            return CreatedAtRoute("GetRole", new {id=role.roleid}, role);
+            return CreatedAtRoute("GetRole", new {id=role.Id}, _mapper.Map<RoleDto>(role));
         }
 
 

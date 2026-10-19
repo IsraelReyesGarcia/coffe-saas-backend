@@ -21,6 +21,6 @@ public class CompanyDto
 
     public DateTime? UpdateAt {get; set;} = DateTime.Now;
 
-    public int UserId {get; set;}
+    public String UserId {get; set;}
 
 }

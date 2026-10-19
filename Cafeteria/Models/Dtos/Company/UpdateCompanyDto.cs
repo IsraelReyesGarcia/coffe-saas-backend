@@ -13,5 +13,5 @@ public class UpdateCompanyDto
 
     public string Phone {get; set;} = string.Empty;
 
-    public int UserId {get; set;}
+    public string UserId {get; set;}
 }

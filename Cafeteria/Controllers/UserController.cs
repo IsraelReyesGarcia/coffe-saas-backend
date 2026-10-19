@@ -5,11 +5,13 @@ using Cafeteria.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cafeteria.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -27,11 +29,11 @@ namespace Cafeteria.Controllers
         public IActionResult GetUsers()
         {
             var users = _userRepository.GetUsers();
-            var usersDto = new List<UserResponseDto>();
-            foreach(var user in users)
+            var usersDto = _mapper.Map<List<UserDto>>(users);
+            /* foreach(var user in users)
             {
                 usersDto.Add(_mapper.Map<UserResponseDto>(user));
-            }
+            } */
             return Ok(usersDto);
         }
 
@@ -39,7 +41,7 @@ namespace Cafeteria.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult GetUser([FromRoute] int id)
+        public IActionResult GetUser([FromRoute] string id)
         {
             var user = _userRepository.GetUser(id);
             if (user == null)
@@ -49,7 +51,8 @@ namespace Cafeteria.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
+        [AllowAnonymous]
+        [HttpPost("/Register",  Name="Register")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -75,10 +78,58 @@ namespace Cafeteria.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return CreatedAtRoute("GetUser", new { id = user.UserId }, user);
+            return CreatedAtRoute("GetUser", new { id = user.Id }, user);
         }
-    
-        [HttpPatch("updateUser/{id:int}", Name = "UpdateUser")]
+
+        [AllowAnonymous]
+        [HttpPost("/Login", Name = "Login")]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> LoginUser([FromBody] UserLoginDto userLoginDto)
+        {
+            if (userLoginDto == null || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            /* if (!_userRepository.IsUniqueUser(userLoginDto.Email))
+            {
+                ModelState.AddModelError("CustomError", "El email ya existe");
+                return BadRequest(ModelState);
+            } */
+
+            var user = await _userRepository.Login(userLoginDto);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(user);
+        }
+
+
+        [HttpPatch("updateUser/{id}", Name = "UpdateUser")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] UserUpdateDto userUpdateDto)
+        {
+            if (string.IsNullOrEmpty(id))
+                return BadRequest("El id del usuario no es válido");
+
+            if (userUpdateDto == null)
+                return BadRequest("Los datos del usuario no pueden estar vacíos");
+
+            var userUpdated = await _userRepository.Update(id, userUpdateDto);
+            if (userUpdated == null)
+                return NotFound("El usuario a actualizar no existe");
+
+            return Ok(userUpdated);
+        }
+        /* [HttpPatch("updateUser/{id:int}", Name = "UpdateUser")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -112,9 +163,6 @@ namespace Cafeteria.Controllers
             }
 
             return StatusCode(500, "Algo salió mal al actualizar el usuario");
-        }
-    
-        
-
+        } */
     }
 }

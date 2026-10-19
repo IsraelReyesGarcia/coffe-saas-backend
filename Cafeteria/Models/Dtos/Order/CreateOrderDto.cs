@@ -1,4 +1,5 @@
 using System;
+using Cafeteria.Models.Dtos.OrderProduct;
 
 namespace Cafeteria.Models.Dtos.Order;
 
@@ -8,6 +9,7 @@ public class CreateOrderDto
     public int Status {get;set;}
     public bool IsPai {get;set;}
     public int TableId {get;set;}
+    public List<CreateOrderProductDto> Details {get; set;} = new();
 
     //Definir los enums de Status
     //1 -> Creado

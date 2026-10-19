@@ -21,6 +21,35 @@ namespace Cafeteria.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Cafeteria.Models.ApplicationRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<float>("Pay")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
             modelBuilder.Entity("Cafeteria.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -58,6 +87,9 @@ namespace Cafeteria.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
@@ -184,8 +216,8 @@ namespace Cafeteria.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("updateat");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer")
+                    b.Property<string>("UserId")
+                        .HasColumnType("text")
                         .HasColumnName("userid");
 
                     b.HasKey("CompanyId");
@@ -299,8 +331,8 @@ namespace Cafeteria.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("cancelat");
 
-                    b.Property<int?>("CancelById")
-                        .HasColumnType("integer")
+                    b.Property<string>("CancelById")
+                        .HasColumnType("text")
                         .HasColumnName("cancelbyid");
 
                     b.Property<string>("CancelReason")
@@ -320,8 +352,8 @@ namespace Cafeteria.Migrations
                         .HasColumnType("real")
                         .HasColumnName("discount");
 
-                    b.Property<int?>("FinishById")
-                        .HasColumnType("integer")
+                    b.Property<string>("FinishById")
+                        .HasColumnType("text")
                         .HasColumnName("finishbyid");
 
                     b.Property<bool>("IsPai")
@@ -470,6 +502,50 @@ namespace Cafeteria.Migrations
                     b.ToTable("productcategories");
                 });
 
+            modelBuilder.Entity("Cafeteria.Models.ProductImage", b =>
+                {
+                    b.Property<int>("ProductImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("productimageid");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ProductImageId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("createdat");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("integer")
+                        .HasColumnName("height");
+
+                    b.Property<string>("OriginalFileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("originalfilename");
+
+                    b.Property<string>("PathImage")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("pathimage");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer")
+                        .HasColumnName("productid");
+
+                    b.Property<int>("Width")
+                        .HasColumnType("integer")
+                        .HasColumnName("width");
+
+                    b.HasKey("ProductImageId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("productimages");
+                });
+
             modelBuilder.Entity("Cafeteria.Models.RawMaterial", b =>
                 {
                     b.Property<int>("RawMaterialId")
@@ -502,26 +578,6 @@ namespace Cafeteria.Migrations
                     b.HasIndex("UnitOfMeasurementId");
 
                     b.ToTable("rawmaterial");
-                });
-
-            modelBuilder.Entity("Cafeteria.Models.Role", b =>
-                {
-                    b.Property<int>("roleid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("roleid"));
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<float>("pay")
-                        .HasColumnType("real");
-
-                    b.HasKey("roleid");
-
-                    b.ToTable("roles");
                 });
 
             modelBuilder.Entity("Cafeteria.Models.Table", b =>
@@ -576,58 +632,6 @@ namespace Cafeteria.Migrations
                     b.ToTable("unitofmeasurements");
                 });
 
-            modelBuilder.Entity("Cafeteria.Models.User", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("userid");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("createat");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)")
-                        .HasColumnName("email");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("passwordhash");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("phone");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer")
-                        .HasColumnName("roleid");
-
-                    b.Property<DateTime?>("UpdateAt")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updateat");
-
-                    b.HasKey("UserId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("users");
-                });
-
             modelBuilder.Entity("Cafeteria.Models.Warehouse", b =>
                 {
                     b.Property<int>("WarehouseId")
@@ -647,8 +651,8 @@ namespace Cafeteria.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer")
+                    b.Property<string>("UserId")
+                        .HasColumnType("text")
                         .HasColumnName("userid");
 
                     b.HasKey("WarehouseId");
@@ -656,32 +660,6 @@ namespace Cafeteria.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("warehouse");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -792,7 +770,7 @@ namespace Cafeteria.Migrations
 
             modelBuilder.Entity("Cafeteria.Models.Company", b =>
                 {
-                    b.HasOne("Cafeteria.Models.User", "User")
+                    b.HasOne("Cafeteria.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
@@ -812,7 +790,7 @@ namespace Cafeteria.Migrations
 
             modelBuilder.Entity("Cafeteria.Models.Order", b =>
                 {
-                    b.HasOne("Cafeteria.Models.User", "CancelByUser")
+                    b.HasOne("Cafeteria.Models.ApplicationUser", "CancelByUser")
                         .WithMany()
                         .HasForeignKey("CancelById");
 
@@ -820,7 +798,7 @@ namespace Cafeteria.Migrations
                         .WithMany()
                         .HasForeignKey("ClientId");
 
-                    b.HasOne("Cafeteria.Models.User", "FinishByUser")
+                    b.HasOne("Cafeteria.Models.ApplicationUser", "FinishByUser")
                         .WithMany()
                         .HasForeignKey("FinishById");
 
@@ -869,6 +847,17 @@ namespace Cafeteria.Migrations
                     b.Navigation("ProductCategorie");
                 });
 
+            modelBuilder.Entity("Cafeteria.Models.ProductImage", b =>
+                {
+                    b.HasOne("Cafeteria.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Cafeteria.Models.RawMaterial", b =>
                 {
                     b.HasOne("Cafeteria.Models.UnitOfMeasurement", "UnitOfMeasurement")
@@ -880,20 +869,9 @@ namespace Cafeteria.Migrations
                     b.Navigation("UnitOfMeasurement");
                 });
 
-            modelBuilder.Entity("Cafeteria.Models.User", b =>
-                {
-                    b.HasOne("Cafeteria.Models.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("Cafeteria.Models.Warehouse", b =>
                 {
-                    b.HasOne("Cafeteria.Models.User", "User")
+                    b.HasOne("Cafeteria.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
@@ -902,7 +880,7 @@ namespace Cafeteria.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Cafeteria.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -929,7 +907,7 @@ namespace Cafeteria.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Cafeteria.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)

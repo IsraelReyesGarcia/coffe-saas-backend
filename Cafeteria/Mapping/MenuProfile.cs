@@ -15,5 +15,7 @@ public class MenuProfile:Profile
         .ReverseMap();
         CreateMap<Menu,CreateMenuDto>().ReverseMap();
         CreateMap<Menu,UpdateMenuDto>().ReverseMap();
+        CreateMap<Menu,MenuResponseDto>()
+        .ForMember(dest => dest.MenuType, opt => opt.MapFrom(src => src.MenuTime != null ? src.MenuTime.Name : string.Empty));
     }
 }

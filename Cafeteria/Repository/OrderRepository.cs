@@ -1,6 +1,8 @@
 using System;
 using Cafeteria.Models;
+using Cafeteria.Models.Enums;
 using Cafeteria.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cafeteria.Repository;
 
@@ -19,7 +21,7 @@ public class OrderRepository : IOrderRepository
             return false;
         }
 
-        order.Status = 2;
+        order.Status = (int)OrderStatus.Cancelada;
 
         _db.Orders.Update(order);
         return Save();
@@ -31,8 +33,10 @@ public class OrderRepository : IOrderRepository
             return false;
         }
 
-        order.Status = 1;
+        order.Total = (float)order.OrderProducts.Sum(d => d.Quantity * d.Price);
+        order.Status = (int)OrderStatus.Creada;
         order.CreateAt = DateTime.UtcNow;
+
         _db.Orders.Add(order);
 
         return Save();
@@ -45,7 +49,7 @@ public class OrderRepository : IOrderRepository
             return false;
         }
 
-        order.Status = 3;
+        order.Status = (int)OrderStatus.Pagada;
 
         _db.Orders.Update(order);
         return Save();
@@ -68,12 +72,17 @@ public class OrderRepository : IOrderRepository
             return null;
         }
 
-        return _db.Orders.FirstOrDefault(o => o.OrderId == id);
+        return _db.Orders
+            .Include(o => o.OrderProducts)
+            .FirstOrDefault(o => o.OrderId == id);
     }
 
     public ICollection<Order> GetOrders()
     {
-        return _db.Orders.OrderBy(o => o.OrderId).ToList();
+        return _db.Orders
+            .Include(o => o.OrderProducts)
+            .OrderBy(o => o.OrderId)
+            .ToList();
     }
 
     public bool OrderExists(int id)
@@ -87,5 +96,41 @@ public class OrderRepository : IOrderRepository
     public bool Save()
     {
         return _db.SaveChanges() >= 1 ? true : false;
+    }
+
+    public bool MarkInPreparation(Order order)
+    {
+        if(order == null)
+        {
+            return false;
+        }
+        
+        order.Status = (int)OrderStatus.EnPreparacion;
+
+        _db.Orders.Update(order);
+
+        return Save();
+    }
+
+    public bool MarkReady(Order order)
+    {
+        if(order == null) return false;
+
+        order.Status = (int)OrderStatus.Lista;
+
+        _db.Orders.Update(order);
+
+        return Save();
+    }
+
+    public bool MarkDelivered(Order order)
+    {
+        if(order == null) return false;
+
+        order.Status = (int)OrderStatus.Entregada;
+
+        _db.Orders.Update(order);
+
+        return Save();
     }
 }

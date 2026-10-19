@@ -34,7 +34,7 @@ public class CompanyRepository : ICompanyRepository
                 Email = c.Email,
                 CreateAt = c.CreateAt,
                 UpdateAt = c.UpdateAt,
-                UserId = c.UserId ?? 0
+                UserId = c.UserId ?? string.Empty
             })
             .ToList();
     }
@@ -57,13 +57,13 @@ public class CompanyRepository : ICompanyRepository
             Phone = result.Phone,
             CreateAt = result.CreateAt,
             UpdateAt = result.UpdateAt,
-            UserId = result.UserId ?? 0
+            UserId = result.UserId
         };
     }
 
     public async Task<CompanyDto> Register(CreateCompanyDto createCompanyDto)
     {
-        var user = await _db.Users.FindAsync(createCompanyDto.UserId);
+        var user = await _db.ApplicationUsers.FindAsync(createCompanyDto.UserId);
         if (user == null)
         {
             return null!;
@@ -94,7 +94,7 @@ public class CompanyRepository : ICompanyRepository
             Email = company.Email,
             CreateAt = company.CreateAt,
             UpdateAt = company.UpdateAt,
-            UserId = user.UserId
+            UserId = user.Id
         };
     }
 
@@ -109,7 +109,7 @@ public class CompanyRepository : ICompanyRepository
             return null!;
         }
 
-        var user = await _db.Users.FindAsync(updateCompanyDto.UserId);
+        var user = await _db.ApplicationUsers.FindAsync(updateCompanyDto.UserId);
         if (user == null)
         {
             return null!;
@@ -138,7 +138,7 @@ public class CompanyRepository : ICompanyRepository
             Phone = company.Phone,
             CreateAt = company.CreateAt,
             UpdateAt = company.UpdateAt,
-            UserId = company.UserId ?? 0
+            UserId = company.UserId ?? string.Empty
         };
     }
 }

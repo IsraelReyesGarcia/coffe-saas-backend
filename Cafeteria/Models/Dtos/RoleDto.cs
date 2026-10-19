@@ -5,9 +5,9 @@ namespace Cafeteria.Models.Dtos;
 
 public class RoleDto
 {
-    public int roleid {get; set;}
+    public string Id { get; set; } = string.Empty;
 
-    public string name {get; set;} = string.Empty;
+    public string Name {get; set;} = string.Empty;
 
-    public int pay {get; set;}
+    public float Pay {get; set;}
 }

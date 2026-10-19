@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("622e7e4a-03fd-4e20-bb5c-453c6eae3996")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cafeteria")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+176723b5cf6886d6ca474666fea939528b3cd011")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a90024ff36632eab2ca6c5cf4eca9f2ea97b53e2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cafeteria")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cafeteria")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

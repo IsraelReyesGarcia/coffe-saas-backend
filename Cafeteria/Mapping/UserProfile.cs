@@ -8,7 +8,7 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        // CreateUserDto → User (Ignorar Password, se hashea en el Service)
+        /* // CreateUserDto → User (Ignorar Password, se hashea en el Service)
         CreateMap<CreateUserDto, User>()
             .ForMember(dest => dest.UserId, opt => opt.Ignore())
             .ForMember(dest => dest.PasswordHash, opt => opt.Ignore()) // ✅ Se maneja en Service
@@ -33,6 +33,8 @@ public class UserProfile : Profile
             .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role != null ? src.Role.name : string.Empty))
             .ForMember(dest => dest.Token, opt => opt.Ignore()) // ✅ Se genera en Service
             .ForMember(dest => dest.TokenExpiration, opt => opt.Ignore()); // ✅ Se genera en Service
-
+ */
+        CreateMap<ApplicationUser, UserDataDto>().ReverseMap();
+        CreateMap<ApplicationUser, UserDto>().ReverseMap();
     }
 }

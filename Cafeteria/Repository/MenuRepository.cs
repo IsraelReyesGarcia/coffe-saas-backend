@@ -1,5 +1,6 @@
 using System;
 using Cafeteria.Models;
+using Cafeteria.Models.Dtos.Menu;
 using Cafeteria.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,12 +46,50 @@ public class MenuRepository : IMenuRepository
         return _db.Menu.Include(m => m.MenuTime).FirstOrDefault(m => m.MenuId == id);
     }
 
-    public ICollection<Menu> GetMenus()
+    public ICollection<Menu> GetMenus(string? searchText = null)
     {
-        return _db.Menu
+        var query = _db.Menu.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(searchText))
+            query = query.Where(m=> m.Name.Contains(searchText)
+            || m.MenuTime.Name.Contains(searchText));
+
+        return query
             .Include(m => m.MenuTime)
             .OrderBy(m => m.Name)
             .ToList();
+    }
+
+    public ICollection<MenuResponseDto> GetMenusInPage(int pageNumber, int pageSize, string? searchText = null)
+    {
+        var query = _db.Menu.AsQueryable();
+        if(!string.IsNullOrWhiteSpace(searchText))
+            query = query.Where(m => m.Name.Contains(searchText)
+            || m.MenuTime.Name.Contains(searchText));
+        
+        return query
+        .Include(m => m.MenuTime)
+        .Skip((pageNumber -1) * pageSize).Take(pageSize)
+        .OrderBy(m => m.Name)
+        .Select(m => new MenuResponseDto
+        {
+            MenuId = m.MenuId,
+            Name = m.Name,
+            Description = m.Description,
+            DateRegister = m.DateRegister,
+            MenuTimeId = m.MenuTimeId,
+            MenuType = m.MenuTime.Name
+        })
+        .ToList();
+    }
+
+    public int GetTotalMenus(string? searchText = null)
+    {
+        var query = _db.Menu.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(searchText))
+            query = query.Where(m => m.Name.Contains(searchText)
+            || m.MenuTime.Name.Contains(searchText));
+
+        return query.Count();
     }
 
     public bool MenuExists(int id)
@@ -77,4 +116,5 @@ public class MenuRepository : IMenuRepository
 
         return Save();
     }
+    
 }

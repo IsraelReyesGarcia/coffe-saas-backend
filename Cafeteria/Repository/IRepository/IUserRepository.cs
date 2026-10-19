@@ -10,12 +10,12 @@ public interface IUserRepository
     /** 
     * Obtener todos los usuarios
     */
-    ICollection<UserResponseDto> GetUsers();
+    ICollection<ApplicationUser> GetUsers();
 
     /** 
     * Obtener usuario por id
     */
-    UserResponseDto GetUser(int id);
+    ApplicationUser GetUser(string id);
 
     /** 
     * Recibe el correo y revisa si es único
@@ -25,21 +25,27 @@ public interface IUserRepository
     /** 
     * Realizar el Login del usuario
     */
-    Task<LoginResponseDto> Login(UserLoginDto userLoginDto);
+    Task<UserLoginResponseDto> Login(UserLoginDto userLoginDto);
 
     /** 
     * Realizar el registro del usuario
     */
-    Task<UserResponseDto> Register(CreateUserDto createUserDto);
+    Task<UserDataDto> Register(CreateUserDto createUserDto);
 
     /** 
     * Realizar la actualización del usuario
     */
-    Task<UserResponseDto> Update(User user);
+    //Task<ApplicationUser> Update(User user);
 
     /** 
     * Confirmar cumplimiento de métodos
     */
+
+    /* 
+        Actualiza el usuario
+     */
+    Task<UserDataDto?> Update(string id, UserUpdateDto userUpdateDto);
+
     bool Save(); 
 
 }

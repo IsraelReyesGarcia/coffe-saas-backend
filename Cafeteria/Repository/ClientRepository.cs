@@ -1,4 +1,5 @@
 using Cafeteria.Models.Dtos.Client;
+using Cafeteria.Models.Dtos.InputMaterial;
 using Cafeteria.Repository.IRepository;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 

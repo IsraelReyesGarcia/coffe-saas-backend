@@ -16,5 +16,5 @@ public class CreateCompanyDto
 
     public DateTime CreateAt {get; set;} = DateTime.Now;
 
-    public int UserId {get; set;}
+    public String UserId {get; set;}
 }

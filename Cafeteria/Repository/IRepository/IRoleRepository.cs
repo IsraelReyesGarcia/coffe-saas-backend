@@ -5,9 +5,13 @@ namespace Cafeteria.Repository.IRepository;
 
 public interface IRoleRepository
 {
-    ICollection<Role> getRoles();
-
-    Role? GetRole(int id);
+    List<ApplicationRole> GetRoles();
+    Task<ApplicationRole?> GetRole(string id);
+    bool RoleExists(string Name);
+    Task<bool> CreateRole(ApplicationRole role);
+    Task<bool> UpdateRole(ApplicationRole role);
+    Task<bool> DeleteRole(ApplicationRole role);
+    /* Role? GetRole(int id);
 
     bool RoleExists(int id);
 
@@ -19,5 +23,5 @@ public interface IRoleRepository
 
     bool DeleteRole(Role role);
 
-    bool Save(); 
+    bool Save();  */
 }

@@ -68,6 +68,46 @@ public class ProductRepository : IProductRepository
             }).ToList();
     }
 
+    public ICollection<ProductResponseDto> GetProductsInPages(int pageNumber, int pageSize, string? searchText = null)
+    {
+        var query = _db.Product.AsQueryable();
+        if(!string.IsNullOrWhiteSpace(searchText))
+            query = query.Where(p => p.Name.Contains(searchText)
+               || p.ProductCategorie.Category.Contains(searchText) );
+
+        return query
+        .OrderBy(p => p.ProductId)
+        .Skip((pageNumber - 1) * pageSize).Take(pageSize)
+        .Select(p => new ProductResponseDto
+        {
+            ProductId = p.ProductId,
+            Name = p.Name,
+            Price = p.Price,
+            Description = p.Description,
+            CreateAt = p.CreateAt,
+            UpdateAt = p.UpdateAt,
+            ProductCategoryId = p.ProductCategoryId,
+            ProductCategorie = p.ProductCategorie.Category,
+            CoverImage = _db.ProductImages
+                .Where(i => i.ProductId == p.ProductId)
+                .OrderBy(i => i.CreatedAt)
+                .Select(i => i.PathImage)
+                .FirstOrDefault()
+        })
+        .ToList();
+    }
+
+    public int GetTotalProducts(string? searchText = null)
+    {
+        var query = _db.Product.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(searchText))
+            query = query.Where(p=> p.Name.Contains(searchText)
+             || p.ProductCategorie.Category.Contains(searchText)
+            );
+        
+        return query.Count();
+    }
+
     public bool ProductExist(int id)
     {
         if(id <= 0)

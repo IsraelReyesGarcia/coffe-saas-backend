@@ -11,5 +11,6 @@ public class ProductResponseDto
     public DateTime CreateAt {get; set;} = DateTime.UtcNow;
     public DateTime? UpdateAt {get; set;} = null;
     public int ProductCategoryId {get; set;}
-    public string ProductCategorie {get;set;} = string.Empty;
+    public string ProductCategorie { get; set; } = string.Empty;
+    public string? CoverImage { get; set; }
 }

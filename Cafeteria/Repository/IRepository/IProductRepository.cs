@@ -9,6 +9,12 @@ public interface IProductRepository
     // Obtener productos
     ICollection<ProductResponseDto> GetProducts();
 
+    // Devolvemos los registros paginados
+    ICollection<ProductResponseDto> GetProductsInPages(int pageNumber, int pageSize, string? searchText = null);
+
+    // Devolver el total de productos
+    int GetTotalProducts(string? searchText = null);
+
     // Obtener producto por id
     ProductResponseDto GetProduct(int id);
 

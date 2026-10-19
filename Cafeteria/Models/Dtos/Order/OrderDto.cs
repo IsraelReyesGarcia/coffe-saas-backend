@@ -1,4 +1,5 @@
 using System;
+using Cafeteria.Models.Dtos.OrderProduct;
 
 namespace Cafeteria.Models.Dtos.Order;
 
@@ -20,4 +21,5 @@ public class OrderDto
     public int Status {get;set;}
     public bool IsPai {get;set;}
     public int TableId {get;set;}
+    public List<CreateOrderProductDto> Details { get; set; } = new();
 }

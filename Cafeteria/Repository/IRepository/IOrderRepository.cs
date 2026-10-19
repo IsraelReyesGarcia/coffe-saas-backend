@@ -18,6 +18,14 @@ public interface IOrderRepository
     //Crear una orden
     bool CreateOrder(Order order);
 
+    //Marcar en Preparación
+    bool MarkInPreparation(Order order);
+
+    //Marcar como lista o preparada
+    bool MarkReady(Order order);
+    
+    //Marcar como entregada
+    bool MarkDelivered(Order order);
     //Pagar orden
     bool PayOrder(Order order);
 
